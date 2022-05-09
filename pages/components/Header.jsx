@@ -23,7 +23,7 @@ const Header = () => {
   return (
     <>
       <nav className="pt-3 flex flex-row">
-        <h1 className="px-3 text-2xl sm:text-3xl text-white text-gradient py-1">
+        <h1 className="px-3 text-1xl sm:text-2xl text-white text-gradient py-1">
           Lucky Seven
         </h1>
         <div className="ml-auto py-2 px-4">
@@ -68,9 +68,9 @@ const Header = () => {
                 {network[0].data.chain && network[0].data.chain.id}
                 {shortenAddress(address)}
               </h1>
-              <br />
+              {/* <br />
               Chain ID: {network[0].data.chain && network[0].data.chain.id}
-              <br />
+              <br /> */}
             </>
           )}
         </div>

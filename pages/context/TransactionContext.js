@@ -10,7 +10,6 @@ export const TransactionProvider = ({ children }) => {
 
   useEffect(() => {
     return () => {
-      alert("useEffect");
       const { ethereum } = window;
       setEthereum(ethereum);
     };
