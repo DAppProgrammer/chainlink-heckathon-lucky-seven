@@ -1,11 +1,17 @@
+import { AppProps } from "next/app";
+import { ThirdwebProvider } from "@thirdweb-dev/react";
+
 import "../styles/globals.css";
-import { MoralisProvider } from "react-moralis";
+import { TransactionProvider } from "./context/TransactionContext";
 
 function MyApp({ Component, pageProps }) {
+  const desiredChainId = 80001;
   return (
-    <MoralisProvider initializeOnMount={false}>
-      <Component {...pageProps} />
-    </MoralisProvider>
+    <TransactionProvider>
+      <ThirdwebProvider desiredChainId={desiredChainId}>
+        <Component {...pageProps} />
+      </ThirdwebProvider>
+    </TransactionProvider>
   );
 }
 
