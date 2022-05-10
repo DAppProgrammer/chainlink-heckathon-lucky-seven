@@ -6,6 +6,7 @@ import Image from "next/image";
 import { createAlchemyWeb3 } from "@alch/alchemy-web3";
 
 import { useNetwork, useAddress } from "@thirdweb-dev/react";
+import Link from "next/link";
 
 // Using HTTPS
 const web3 = createAlchemyWeb3(
@@ -24,16 +25,28 @@ const Avatar = () => {
       setCollection(nfts);
     })();
   }, [address]);
-
+  console.log(collection);
   return (
     <>
       {collection.totalCount > 0 ? (
         <div className="w-16 px-3 text-1xl sm:text-2xl p-1">
-          <img
-            src={collection.ownedNfts[collection.totalCount - 1].metadata.image}
-            alt={""}
-            className="w-fit rounded-full"
-          />
+          {collection.ownedNfts[collection.totalCount - 1] && (
+            <img
+              src={
+                collection.ownedNfts[collection.totalCount - 1].metadata.image
+              }
+              alt={""}
+              className="w-fit rounded-full"
+              onClick={() =>
+                window.open(
+                  collection.ownedNfts[collection.totalCount - 1].metadata
+                    .image,
+                  "mozillaWindow",
+                  "left=100,top=100,width=350,height=350,location=0,titlebar=0,toolbar=0,popup"
+                )
+              }
+            />
+          )}
         </div>
       ) : (
         ""
