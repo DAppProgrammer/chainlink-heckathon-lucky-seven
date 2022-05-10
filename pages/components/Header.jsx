@@ -12,6 +12,19 @@ import {
   useDisconnect,
 } from "@thirdweb-dev/react";
 
+const networks = {
+  PolygonTestnetMumbai: {
+    chainId: "0x13881",
+    chainName: "Polygon Testnet Mumbai",
+    nativeCurrency: {
+      name: "Matic",
+      symbol: "Matic",
+      decimals: 18,
+    },
+    rpcUrls: ["https://rpc-mumbai.matic.today"],
+  },
+};
+
 const Header = () => {
   // const connectWithCoinbaseWallet = useCoinbaseWallet();
   const connectWithMetamask = useMetamask();
@@ -19,6 +32,40 @@ const Header = () => {
   const disconnectWallet = useDisconnect();
   const address = useAddress();
   const network = useNetwork();
+
+  const changeNetwork = async (networkName) => {
+    try {
+      if (!ethereum) return alert("Please install metamask");
+
+      await ethereum.request({
+        method: "wallet_addEthereumChain",
+        params: [
+          {
+            ...networks[networkName],
+          },
+        ],
+      });
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
+
+  if (address && network[0].data.chain.id != 80001) {
+    return (
+      <>
+        <div className="bg-yellow-50">
+          You are connected to {network[0].data.chain.name} network. You need to
+          change to Polygon Testnet Mumbai{" "}
+          <span
+            className="text-gray-300 cursor-pointer"
+            onClick={() => changeNetwork("PolygonTestnetMumbai")}
+          >
+            Change
+          </span>
+        </div>
+      </>
+    );
+  }
 
   return (
     <>

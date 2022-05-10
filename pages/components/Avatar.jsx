@@ -12,40 +12,9 @@ const web3 = createAlchemyWeb3(
   "https://eth-ropsten.alchemyapi.io/v2/-T5dg-en08fCxb3PqWITQgKJKlKD6THL"
 );
 
-const networks = {
-  PolygonTestnetMumbai: {
-    chainId: "0x13881",
-    chainName: "Polygon Testnet Mumbai",
-    nativeCurrency: {
-      name: "Matic",
-      symbol: "Matic",
-      decimals: 18,
-    },
-    rpcUrls: ["https://rpc-mumbai.matic.today"],
-  },
-};
-
 const Avatar = () => {
   const [collection, setCollection] = useState([]);
   const address = useAddress();
-  const network = useNetwork();
-
-  const changeNetwork = async (networkName) => {
-    try {
-      if (!ethereum) return alert("Please install metamask");
-
-      await ethereum.request({
-        method: "wallet_addEthereumChain",
-        params: [
-          {
-            ...networks[networkName],
-          },
-        ],
-      });
-    } catch (error) {
-      console.log(error.message);
-    }
-  };
 
   useEffect(() => {
     (async () => {
@@ -59,22 +28,6 @@ const Avatar = () => {
       // console.log(tokenBalance);
     })();
   }, [address]);
-
-  if (network[0].data.chain.id != 80001) {
-    return (
-      <>
-        <span className="text-white">
-          You are connected to {network[0].data.chain.name}.
-        </span>
-        <span
-          className="text-gray-300 cursor-pointer"
-          onClick={() => changeNetwork("PolygonTestnetMumbai")}
-        >
-          Change to Polygon Testnet Mumbai
-        </span>
-      </>
-    );
-  }
 
   return (
     <>
