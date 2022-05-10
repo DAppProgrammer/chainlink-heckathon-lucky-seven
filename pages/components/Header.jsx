@@ -12,18 +12,7 @@ import {
   useDisconnect,
 } from "@thirdweb-dev/react";
 
-const networks = {
-  PolygonTestnetMumbai: {
-    chainId: "0x13881",
-    chainName: "Polygon Testnet Mumbai",
-    nativeCurrency: {
-      name: "Matic",
-      symbol: "Matic",
-      decimals: 18,
-    },
-    rpcUrls: ["https://rpc-mumbai.matic.today"],
-  },
-};
+import switchNetwork from "../utils/switchNetwork";
 
 const Header = () => {
   // const connectWithCoinbaseWallet = useCoinbaseWallet();
@@ -33,35 +22,25 @@ const Header = () => {
   const address = useAddress();
   const network = useNetwork();
 
-  const changeNetwork = async (networkName) => {
-    try {
-      if (!ethereum) return alert("Please install metamask");
-
-      await ethereum.request({
-        method: "wallet_addEthereumChain",
-        params: [
-          {
-            ...networks[networkName],
-          },
-        ],
-      });
-    } catch (error) {
-      console.log(error.message);
-    }
-  };
-
   if (address && network[0].data.chain.id != 80001) {
     return (
       <>
-        <div className="bg-yellow-50">
-          You are connected to {network[0].data.chain.name} network. You need to
-          change to Polygon Testnet Mumbai{" "}
-          <span
-            className="text-gray-300 cursor-pointer"
-            onClick={() => changeNetwork("PolygonTestnetMumbai")}
-          >
-            Change
-          </span>
+        <div className="bg-white opacity-70 flex flex-col h-screen w-screen fixed z-50">
+          <div className="m-auto text-center text-black">
+            <h1>You are connected to network {network[0].data.chain.name}</h1>
+            <h3>
+              Please switch your network to Polygon Testnet Mumbai to play this
+              game.
+            </h3>
+
+            <br />
+            <button
+              className="text-black cursor-pointer rounded-full px-3 py-1 space-x-2 bg-lime-200"
+              onClick={() => switchNetwork("PolygonTestnetMumbai", "0x13881")}
+            >
+              Switch to Mumbai Testnet
+            </button>
+          </div>
         </div>
       </>
     );
@@ -74,29 +53,6 @@ const Header = () => {
           Lucky Seven
         </h1>
         <div className="ml-auto py-2 px-4">
-          {/* {address && (
-            <div>
-              Address: {address}
-              <br />
-              Chain ID: {network[0].data.chain && network[0].data.chain.id}
-              <br />
-              <button onClick={disconnectWallet}>Disconnect</button>
-            </div>
-          )}
-          {!address && (
-            <div>
-              <button onClick={() => connectWithCoinbaseWallet()}>
-                Connect Coinbase Wallet
-              </button>
-              <button onClick={() => connectWithMetamask()}>
-                Connect MetaMask
-              </button>
-              <button onClick={() => connectWithWalletConnect()}>
-                Connect WalletConnect
-              </button>
-            </div>
-          )} */}
-
           {!address && (
             <button
               className="bg-[#dddfe6] py-1 px-5 mx-4 rounded-full cursor-pointer hover:bg-[#2546bd]"
@@ -115,9 +71,6 @@ const Header = () => {
                 {network[0].data.chain && network[0].data.chain.id}
                 {shortenAddress(address)}
               </h1>
-              {/* <br />
-              Chain ID: {network[0].data.chain && network[0].data.chain.id}
-              <br /> */}
             </>
           )}
         </div>
