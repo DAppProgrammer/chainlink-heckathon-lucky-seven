@@ -32,7 +32,7 @@ const Header = () => {
               You are connected to network {network[0].data.chain.name}
             </div>
             <div className="p-1">
-              Please switch to "Polygon Testnet Mumbai" to play this game.
+              Please switch to Polygon Testnet Mumbai to play this game.
             </div>
 
             <div className="p-2">

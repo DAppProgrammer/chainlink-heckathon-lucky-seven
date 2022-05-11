@@ -35,8 +35,8 @@ const BetOption = () => {
           onClick={() => setSelectedOption(6)}
         >
           <div>Win 2x</div>
-          <div className="text-2xl">2 To 6</div>
-          <div>Win Amt {betAmount * 2}</div>
+          <div className="sm:text-2xl">2 To 6</div>
+          <div>Win {betAmount * 2}</div>
         </div>
         <div
           className={`cursor-pointer p-3 m-3 flex justify-around items-center flex-col rounded-xl h-24 w-40 my-5 eth-card .white-glassmorphism ${
@@ -45,8 +45,8 @@ const BetOption = () => {
           onClick={() => setSelectedOption(7)}
         >
           <div>Win 3x</div>
-          <div className="text-2xl">7</div>
-          <div>Win Amt {betAmount * 3}</div>
+          <div className="sm:text-2xl">7</div>
+          <div>Win {betAmount * 3}</div>
         </div>
         <div
           className={`cursor-pointer p-3 m-3 flex justify-around items-center flex-col rounded-xl h-24 w-40 my-5 eth-card .white-glassmorphism ${
@@ -55,8 +55,8 @@ const BetOption = () => {
           onClick={() => setSelectedOption(8)}
         >
           <div>Win 2x</div>
-          <div className="text-2xl">8 To 12</div>
-          <div>Win Amt {betAmount * 2}</div>
+          <div className="sm:text-2xl">8 To 12</div>
+          <div>Win {betAmount * 2}</div>
         </div>
       </div>
 
