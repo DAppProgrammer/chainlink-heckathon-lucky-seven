@@ -60,3 +60,5 @@ export const TransactionProvider = ({ children }) => {
     </TransactionContext.Provider>
   );
 };
+
+export default TransactionProvider;
