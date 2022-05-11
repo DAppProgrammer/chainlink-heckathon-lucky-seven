@@ -55,7 +55,7 @@ const Header = () => {
         <div className="ml-auto py-2 px-4">
           {!address && (
             <button
-              className="bg-slate-600 py-1 px-5 mx-4 rounded-full cursor-pointer hover:bg-[#2546bd]"
+              className="py-1 px-5 mx-4 rounded-full cursor-pointer hover:bg-slate-600 border-2 border-text-gradient text-white"
               onClick={() => connectWithMetamask()}
             >
               Connect
@@ -64,7 +64,7 @@ const Header = () => {
 
           {address && (
             <>
-              <h1 className="bg-slate-600 text-white pr-7 mx-4 rounded-full cursor-pointer hover:bg-[#2546bd] flex items-center">
+              <h1 className="pr-7 mx-4 rounded-full cursor-pointer hover:bg-black flex items-center border-2 border-text-gradient text-white">
                 <div>
                   <Avatar />
                 </div>
