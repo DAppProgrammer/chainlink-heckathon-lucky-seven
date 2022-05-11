@@ -32,14 +32,14 @@ const Avatar = () => {
   return (
     <>
       {collection.totalCount > 0 ? (
-        <div className="w-16 px-3 text-1xl sm:text-2xl p-1">
+        <>
           {collection.ownedNfts[collection.totalCount - 1] && (
             <img
               src={
                 collection.ownedNfts[collection.totalCount - 1].metadata.image
               }
               alt={""}
-              className="w-fit rounded-full"
+              className="w-12 h-12 xs:w-6 xs:h-6 rounded-full"
               onClick={() =>
                 window.open(
                   collection.ownedNfts[collection.totalCount - 1].metadata
@@ -50,9 +50,9 @@ const Avatar = () => {
               }
             />
           )}
-        </div>
+        </>
       ) : (
-        ""
+        <div></div>
       )}
     </>
   );

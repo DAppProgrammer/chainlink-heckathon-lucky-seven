@@ -13,6 +13,7 @@ import {
 } from "@thirdweb-dev/react";
 
 import switchNetwork from "../utils/switchNetwork";
+import Avatar from "./Avatar";
 
 const Header = () => {
   // const connectWithCoinbaseWallet = useCoinbaseWallet();
@@ -25,21 +26,23 @@ const Header = () => {
   if (address && network[0].data.chain.id != 80001) {
     return (
       <>
-        <div className="bg-white opacity-70 flex flex-col h-screen w-screen fixed z-50">
-          <div className="m-auto text-center text-black">
-            <h1>You are connected to network {network[0].data.chain.name}</h1>
-            <h3>
-              Please switch your network to Polygon Testnet Mumbai to play this
-              game.
-            </h3>
+        <div className="bg-black opacity-60 fixed w-full h-full z-50 grid grid-cols-1 content-center">
+          <div className="text-center text-white">
+            <div className="p-1">
+              You are connected to network {network[0].data.chain.name}
+            </div>
+            <div className="p-1">
+              Please switch to "Polygon Testnet Mumbai" to play this game.
+            </div>
 
-            <br />
-            <button
-              className="text-black cursor-pointer rounded-full px-3 py-1 space-x-2 bg-lime-200"
-              onClick={() => switchNetwork("PolygonTestnetMumbai", "0x13881")}
-            >
-              Switch to Mumbai Testnet
-            </button>
+            <div className="p-2">
+              <button
+                className="text-black cursor-pointer rounded-full px-3 py-1 space-x-2 bg-lime-200"
+                onClick={() => switchNetwork("PolygonTestnetMumbai", "0x13881")}
+              >
+                Switch to Mumbai Testnet
+              </button>
+            </div>
           </div>
         </div>
       </>
@@ -49,13 +52,10 @@ const Header = () => {
   return (
     <>
       <nav className="pt-3 flex flex-row">
-        <h1 className="px-3 text-1xl sm:text-2xl text-white text-gradient py-1">
-          Lucky Seven
-        </h1>
         <div className="ml-auto py-2 px-4">
           {!address && (
             <button
-              className="bg-[#dddfe6] py-1 px-5 mx-4 rounded-full cursor-pointer hover:bg-[#2546bd]"
+              className="bg-slate-600 py-1 px-5 mx-4 rounded-full cursor-pointer hover:bg-[#2546bd]"
               onClick={() => connectWithMetamask()}
             >
               Connect
@@ -64,12 +64,14 @@ const Header = () => {
 
           {address && (
             <>
-              <h1
-                className="bg-[#dddfe6] py-1 px-5 mx-4 rounded-full cursor-pointer hover:bg-[#2546bd]"
-                onClick={disconnectWallet}
-              >
-                {network[0].data.chain && network[0].data.chain.id}
-                {shortenAddress(address)}
+              <h1 className="bg-slate-600 text-white pr-7 mx-4 rounded-full cursor-pointer hover:bg-[#2546bd] flex items-center">
+                <div>
+                  <Avatar />
+                </div>
+                <div className="pl-3" onClick={disconnectWallet}>
+                  {network[0].data.chain && network[0].data.chain.id}
+                  {shortenAddress(address)}
+                </div>
               </h1>
             </>
           )}
