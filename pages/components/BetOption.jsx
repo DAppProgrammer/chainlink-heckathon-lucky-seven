@@ -1,6 +1,8 @@
-import React, { useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
+import TransactionProvider from "../context/TransactionContext";
 
 const BetOption = () => {
+  const { approved, setApproved } = useContext(TransactionProvider);
   const [tokenBalance, setTokenBalance] = useState(2500);
   const [selectedOption, setSelectedOption] = useState(7);
   const [betAmount, setBetAmount] = useState(500);
@@ -80,6 +82,16 @@ const BetOption = () => {
           >
             +
           </button>
+        </div>
+      </div>
+      <div className="flex justify-center pt-7 ">
+        <div
+          className={`cursor-pointer p-3 m-3 flex justify-around items-center flex-col rounded-full my-5 eth-card .white-glassmorphism ${
+            approved ? "border-2 border-white" : "grayscale"
+          }`}
+          onClick={() => setApproved(true)}
+        >
+          Approve the Bet
         </div>
       </div>
     </>

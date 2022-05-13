@@ -11,6 +11,8 @@ import {
 } from "@thirdweb-dev/react";
 
 import Avatar from "./Avatar";
+import Image from "next/image";
+import ImgCoins from "../assets/coins4.jpg";
 
 const shortenAddress = (address) =>
   `${address.slice(0, 5)}...${address.slice(address.length - 4)}`;
@@ -66,7 +68,7 @@ const Header = () => {
   if (address && network[0].data.chain.id != 80001) {
     return (
       <>
-        <div className="bg-black opacity-60 fixed w-full h-full z-50 grid grid-cols-1 content-center">
+        <div className="bg-black opacity-85 fixed w-full h-full z-50 grid grid-cols-1 content-center">
           <div className="text-center text-white">
             <div className="p-1">
               You are connected to network {network[0].data.chain.name}
@@ -92,6 +94,10 @@ const Header = () => {
   return (
     <>
       <nav className="pt-3 flex flex-row">
+        <div className="text-slate-300 px-3 flex items-center">
+          <Image src={ImgCoins} alt="" />
+          Token balance: 500
+        </div>
         <div className="ml-auto py-2 px-4">
           {!address && (
             <button

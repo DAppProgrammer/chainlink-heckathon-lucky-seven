@@ -39,7 +39,7 @@ const Avatar = () => {
                 collection.ownedNfts[collection.totalCount - 1].metadata.image
               }
               alt={""}
-              className="w-12 h-12 xs:w-6 xs:h-6 rounded-full"
+              className="w-12 h-12 xs:w-8 xm:h-8 rounded-full"
               onClick={() =>
                 window.open(
                   collection.ownedNfts[collection.totalCount - 1].metadata
