@@ -1,5 +1,6 @@
 import React, { useContext, useEffect } from "react";
 // import { TransactionContext } from "../context/TransactionContext";
+import switchNetwork from "../../utils/switchNetwork";
 
 import {
   useMetamask,
@@ -13,49 +14,7 @@ import {
 import Avatar from "./Avatar";
 import Image from "next/image";
 import ImgCoins from "../assets/coins4.jpg";
-
-const shortenAddress = (address) =>
-  `${address.slice(0, 5)}...${address.slice(address.length - 4)}`;
-
-const networks = {
-  PolygonTestnetMumbai: {
-    chainId: "0x13881",
-    chainName: "Polygon Testnet Mumbai",
-    nativeCurrency: {
-      name: "Matic",
-      symbol: "Matic",
-      decimals: 18,
-    },
-    rpcUrls: ["https://rpc-mumbai.matic.today"],
-  },
-};
-
-const switchNetwork = async (networkName, chainId) => {
-  if (!window.ethereum) return;
-  const { ethereum } = window;
-
-  try {
-    await ethereum.request({
-      method: "wallet_switchEthereumChain",
-      params: [{ chainId: chainId }],
-    });
-  } catch (error) {
-    if (error.code === 4902) {
-      try {
-        await ethereum.request({
-          method: "wallet_addEthereumChain",
-          params: [
-            {
-              ...networks[networkName],
-            },
-          ],
-        });
-      } catch (error) {
-        alert(error.message);
-      }
-    }
-  }
-};
+import shortenAddress from "../../utils/shortenAddress";
 
 const Header = () => {
   // const connectWithCoinbaseWallet = useCoinbaseWallet();
