@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import TransactionProvider from "../context/TransactionContext";
+import TransactionProvider from "../../context/TransactionContext";
 
 const BetOption = () => {
   const { approved, setApproved } = useContext(TransactionProvider);
