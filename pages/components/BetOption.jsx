@@ -2,7 +2,9 @@ import React, { useContext, useEffect, useState } from "react";
 import TransactionProvider from "../../context/TransactionContext";
 
 const BetOption = () => {
-  const { approved, setApproved } = useContext(TransactionProvider);
+  const [approve, setApprove] = useState(false);
+  const [approved, setApproved] = useState(false);
+
   const [tokenBalance, setTokenBalance] = useState(2500);
   const [selectedOption, setSelectedOption] = useState(7);
   const [betAmount, setBetAmount] = useState(500);
@@ -18,6 +20,25 @@ const BetOption = () => {
     }
 
     type == "+" ? setBetAmount(betAmount + 500) : setBetAmount(betAmount - 500);
+  };
+
+  const handleApprove = () => {
+    if (!approve) {
+      //Check bet amount and available balance
+      //Call async/await approve method of ERC20 token
+      setApprove(true);
+
+      setTimeout(() => {
+        setApproved(true);
+      }, 2000);
+    }
+
+    if (approved) {
+      //roll the dice - call async/await random method of contract
+      alert("You lost, try again!!!");
+      setApproved(false);
+      setApprove(false);
+    }
   };
 
   return (
@@ -87,11 +108,15 @@ const BetOption = () => {
       <div className="flex justify-center pt-7 ">
         <div
           className={`cursor-pointer p-3 m-3 flex justify-around items-center flex-col rounded-full my-5 eth-card .white-glassmorphism ${
-            approved ? "border-2 border-white" : "grayscale"
-          }`}
-          onClick={() => setApproved(true)}
+            approve ? "border-2 border-white" : "grayscale"
+          } `}
+          onClick={() => handleApprove()}
         >
-          Approve the Bet
+          {approved ? (
+            <span> Bet approved, click to roll the dice </span>
+          ) : (
+            <span> Approve the Bet</span>
+          )}
         </div>
       </div>
     </>

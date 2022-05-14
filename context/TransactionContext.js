@@ -7,7 +7,7 @@ export const TransactionProvider = ({ children }) => {
   const [currentAccount, setCurrentAccount] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [ethereum, setEthereum] = useState();
-  const [approved, setApproved] = useState(false);
+  // const [approved, setApproved] = useState(false);
 
   useEffect(() => {
     return () => {
@@ -55,8 +55,8 @@ export const TransactionProvider = ({ children }) => {
         setIsLoading,
         isLoading,
         ethereum,
-        approved,
-        setApproved,
+        // approved,
+        // setApproved,
       }}
     >
       {children}
