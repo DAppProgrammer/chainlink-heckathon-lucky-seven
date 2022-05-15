@@ -1,5 +1,5 @@
 import React, { useContext, useEffect } from "react";
-// import { TransactionContext } from "../context/TransactionContext";
+import TransactionProvider from "../../context/TransactionContext";
 import switchNetwork from "../../utils/switchNetwork";
 
 import {
@@ -9,6 +9,7 @@ import {
   useNetwork,
   useAddress,
   useDisconnect,
+  useTokenBalance,
 } from "@thirdweb-dev/react";
 
 import Avatar from "./Avatar";
@@ -23,11 +24,43 @@ const Header = () => {
   const disconnectWallet = useDisconnect();
   const address = useAddress();
   const network = useNetwork();
+  const { tokenBalance, setTokenBalance, setCurrentAccount } =
+    useContext(TransactionProvider);
+
+  console.log("ADDRESS:", address);
+
+  if (!address) {
+    return (
+      <>
+        <div className="bg-black opacity-85 fixed w-full h-full z-50 grid grid-cols-1 content-center">
+          <h1 className="text-center text-4xl font-bold text-gradient pb-4">
+            Lucky Seven
+          </h1>
+
+          <div className="text-center text-white">
+            <div className="p-1">Please connect to play this game.</div>
+
+            <div className="p-2">
+              <button
+                className="text-black cursor-pointer rounded-full px-7 py-1 space-x-2 bg-lime-200"
+                onClick={() => connectWithMetamask()}
+              >
+                Connect
+              </button>
+            </div>
+          </div>
+        </div>
+      </>
+    );
+  }
 
   if (address && network[0].data.chain.id != 80001) {
     return (
       <>
         <div className="bg-black opacity-85 fixed w-full h-full z-50 grid grid-cols-1 content-center">
+          <h1 className="text-center text-4xl font-bold text-gradient pb-4">
+            Lucky Seven
+          </h1>
           <div className="text-center text-white">
             <div className="p-1">
               You are connected to network {network[0].data.chain.name}
@@ -55,7 +88,8 @@ const Header = () => {
       <nav className="pt-3 flex flex-row">
         <div className="text-slate-300 px-3 flex items-center">
           <Image src={ImgCoins} alt="" />
-          Token balance: 500
+          Token balance: {tokenBalance}{" "}
+          <span className="px-3 text-green-200">Buy Game Tokens</span>
         </div>
         <div className="ml-auto py-2 px-4">
           {!address && (

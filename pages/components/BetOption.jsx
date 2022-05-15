@@ -1,13 +1,16 @@
 import React, { useContext, useEffect, useState } from "react";
 import TransactionProvider from "../../context/TransactionContext";
+import Loader from "./Loader";
+import Trade from "./Trade";
 
 const BetOption = () => {
-  const [approve, setApprove] = useState(false);
   const [approved, setApproved] = useState(false);
+  const [loading, setLoading] = useState(false);
 
-  const [tokenBalance, setTokenBalance] = useState(2500);
   const [selectedOption, setSelectedOption] = useState(7);
   const [betAmount, setBetAmount] = useState(500);
+  const { tokenBalance, setTokenBalance, trading, setTrading } =
+    useContext(TransactionProvider);
 
   const updateBetAmount = (type) => {
     if (type == "+" && betAmount + 500 > tokenBalance) {
@@ -23,21 +26,37 @@ const BetOption = () => {
   };
 
   const handleApprove = () => {
-    if (!approve) {
+    alert(betAmount);
+    alert(tokenBalance);
+    if (betAmount > tokenBalance) {
+      alert(
+        "You do not have enough tokens to make this bet, buy some more tokens to play"
+      );
+      return;
+    }
+    setLoading(true);
+
+    if (!approved) {
       //Check bet amount and available balance
       //Call async/await approve method of ERC20 token
-      setApprove(true);
 
       setTimeout(() => {
         setApproved(true);
+        setLoading(false);
       }, 2000);
     }
+  };
 
+  const rollTheDice = () => {
+    setLoading(true);
     if (approved) {
-      //roll the dice - call async/await random method of contract
-      alert("You lost, try again!!!");
-      setApproved(false);
-      setApprove(false);
+      //Call async/await random function of game contract
+
+      setTimeout(() => {
+        setLoading(false);
+        setApproved(false);
+        alert("You did not win this time, try again !!!");
+      }, 2000);
     }
   };
 
@@ -46,8 +65,9 @@ const BetOption = () => {
       <h1 className="text-center text-4xl font-bold text-gradient">
         Lucky Seven
       </h1>
+
       <div className="text-center text-white text-2xl text-gradient pt-10">
-        Select Option
+        Select Bet Option
       </div>
 
       <div className="flex justify-center ">
@@ -84,7 +104,7 @@ const BetOption = () => {
       </div>
 
       <div className="text-center text-white text-2xl text-gradient pt-5">
-        <div> Select bet amount</div>
+        <div> Select Bet Amount</div>
         <div className="p-3">
           <button
             className="bg-black-500 w-10 rounded-tl-xl rounded-bl-xl text-2xl border-2"
@@ -106,19 +126,44 @@ const BetOption = () => {
         </div>
       </div>
       <div className="flex justify-center pt-7 ">
-        <div
-          className={`cursor-pointer p-3 m-3 flex justify-around items-center flex-col rounded-full my-5 eth-card .white-glassmorphism ${
-            approve ? "border-2 border-white" : "grayscale"
-          } `}
-          onClick={() => handleApprove()}
-        >
-          {approved ? (
-            <span> Bet approved, click to roll the dice </span>
-          ) : (
-            <span> Approve the Bet</span>
-          )}
-        </div>
+        {!loading
+          ? !approved && (
+              <div
+                className="cursor-pointer px-4 py-2 m-3 flex justify-around items-center flex-col rounded-full my-5 border-2 text-white "
+                onClick={() => {
+                  handleApprove();
+                }}
+              >
+                Approve the Bet
+              </div>
+            )
+          : !approved && <Loader />}
       </div>
+
+      {approved && (
+        <div className="text-center text-white pt-5">
+          <div className="text-gradient text-2xl">
+            Bet has been approved. Roll the dice to play the game
+          </div>
+          <div>
+            <button
+              className="cursor-pointer px-3 py-2 m-3 items-center flex-col rounded-full my-5 border-2  "
+              onClick={() => rollTheDice()}
+            >
+              Roll the Dice
+            </button>
+            {loading && <Loader />}
+          </div>
+        </div>
+      )}
+
+      {trading && (
+        <div className="fixed top-0 left-0 w-full h-full flex justify-center items-center gradient-bg-welcome">
+          <div className="w-1/2 h-auto  bg-white rounded-2xl items-center text-center px-3 py-3">
+            <Trade />
+          </div>
+        </div>
+      )}
     </>
   );
 };

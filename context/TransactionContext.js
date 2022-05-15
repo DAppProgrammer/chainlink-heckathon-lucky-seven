@@ -7,8 +7,10 @@ export const TransactionProvider = ({ children }) => {
   const [currentAccount, setCurrentAccount] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [ethereum, setEthereum] = useState();
-  // const [approved, setApproved] = useState(false);
+  const [tokenBalance, setTokenBalance] = useState(1500);
+  const [trading, setTrading] = useState(false);
 
+  // const [approved, setApproved] = useState(false);
   useEffect(() => {
     return () => {
       const { ethereum } = window;
@@ -32,31 +34,33 @@ export const TransactionProvider = ({ children }) => {
   //     }
   //   };
 
-  const connectWallet = async () => {
-    try {
-      if (!ethereum) return alert("Please install MetaMask.");
+  // const connectWallet = async () => {
+  //   try {
+  //     if (!ethereum) return alert("Please install MetaMask.");
 
-      const accounts = await ethereum.request({
-        method: "eth_requestAccounts",
-      });
+  //     const accounts = await ethereum.request({
+  //       method: "eth_requestAccounts",
+  //     });
 
-      setCurrentAccount(accounts[0]);
-    } catch (error) {
-      console.log(error);
-      throw new Error("No ethereum object");
-    }
-  };
+  //     setCurrentAccount(accounts[0]);
+  //   } catch (error) {
+  //     console.log(error);
+  //     throw new Error("No ethereum object");
+  //   }
+  // };
 
   return (
     <TransactionContext.Provider
       value={{
-        connectWallet,
+        setCurrentAccount,
         currentAccount,
         setIsLoading,
         isLoading,
         ethereum,
-        // approved,
-        // setApproved,
+        tokenBalance,
+        setTokenBalance,
+        trading,
+        setTrading,
       }}
     >
       {children}
