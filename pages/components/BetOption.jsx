@@ -1,16 +1,22 @@
 import React, { useContext, useEffect, useState } from "react";
 import TransactionProvider from "../../context/TransactionContext";
+import Dice from "./Dice";
 import Loader from "./Loader";
 import Trade from "./Trade";
 
 const BetOption = () => {
-  const [approved, setApproved] = useState(false);
   const [loading, setLoading] = useState(false);
 
   const [selectedOption, setSelectedOption] = useState(7);
   const [betAmount, setBetAmount] = useState(500);
-  const { tokenBalance, setTokenBalance, trading, setTrading } =
-    useContext(TransactionProvider);
+  const {
+    tokenBalance,
+    setTokenBalance,
+    trading,
+    setTrading,
+    approved,
+    setApproved
+  } = useContext(TransactionProvider);
 
   const updateBetAmount = (type) => {
     if (type == "+" && betAmount + 500 > tokenBalance) {
@@ -43,19 +49,6 @@ const BetOption = () => {
       setTimeout(() => {
         setApproved(true);
         setLoading(false);
-      }, 2000);
-    }
-  };
-
-  const rollTheDice = () => {
-    setLoading(true);
-    if (approved) {
-      //Call async/await random function of game contract
-
-      setTimeout(() => {
-        setLoading(false);
-        setApproved(false);
-        alert("You did not win this time, try again !!!");
       }, 2000);
     }
   };
@@ -140,23 +133,6 @@ const BetOption = () => {
           : !approved && <Loader />}
       </div>
 
-      {approved && (
-        <div className="text-center text-white pt-5">
-          <div className="text-gradient text-2xl">
-            Bet has been approved. Roll the dice to play the game
-          </div>
-          <div>
-            <button
-              className="cursor-pointer px-3 py-2 m-3 items-center flex-col rounded-full my-5 border-2  "
-              onClick={() => rollTheDice()}
-            >
-              Roll the Dice
-            </button>
-            {loading && <Loader />}
-          </div>
-        </div>
-      )}
-
       {trading && (
         <div className="fixed top-0 left-0 w-full h-full flex justify-center items-center gradient-bg-welcome">
           <div className="w-1/2 h-auto  bg-white rounded-2xl items-center text-center px-3 py-3">
@@ -164,6 +140,8 @@ const BetOption = () => {
           </div>
         </div>
       )}
+
+      {approved && <Dice />}
     </>
   );
 };

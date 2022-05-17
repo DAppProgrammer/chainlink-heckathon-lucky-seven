@@ -2,25 +2,18 @@ import React, { useState, useContext, useEffect } from "react";
 import TransactionProvider from "../../context/TransactionContext";
 import { useNetwork } from "@thirdweb-dev/react";
 import { useAddress } from "@thirdweb-dev/react";
-import { useToken } from "@thirdweb-dev/react";
+// import { useToken } from "@thirdweb-dev/react";
 import { ethers } from "ethers";
 
 const Trade = () => {
   const { trading, setTrading } = useContext(TransactionProvider);
   const network = useNetwork();
-  const token = useToken("0xF02c1c8e6114b1Dbe8937a39260b5b0a374432bB");
+  const [l7TokenPrice, setL7TokenPrice] = useState(0);
+  const [maticToken, setMaticToken] = useState(0);
+  const [l7Token, setL7Token] = useState(0);
+  // const token = useToken("0xF02c1c8e6114b1Dbe8937a39260b5b0a374432bB");
   const [tokenBalance, setTokenBalance] = useState(0);
   const address = useAddress();
-  //   const getTokenBalance = async () => {
-  //     const balance = await token.balance();
-  //     setTokenBalance(balance);
-  //   };
-
-  //   const getBalance = async () => {
-  //     const provider = window.ethereum.Provider;
-  //     balance = await provider.getBalance(address);
-  //     console.log("BALANCE:", balance);
-  //   };
 
   useEffect(() => {
     (async () => {
@@ -28,8 +21,57 @@ const Trade = () => {
       let balance = await provider.getBalance(address);
       balance = Math.round(ethers.utils.formatEther(balance) * 1e4) / 1e4;
       setTokenBalance(balance);
+      setMaticToken(balance);
     })();
   }, [address]);
+
+  useEffect(() => {
+    (async () => {
+      const provider = new ethers.providers.JsonRpcProvider(
+        "https://polygon-mumbai.infura.io/v3/3d90d3d4b59845da80d1e51e30205521"
+      );
+      const aggregatorV3InterfaceABI = [
+        {
+          inputs: [],
+          stateMutability: "nonpayable",
+          type: "constructor"
+        },
+        {
+          inputs: [],
+          name: "getLatestPrice",
+          outputs: [
+            {
+              internalType: "int256",
+              name: "",
+              type: "int256"
+            }
+          ],
+          stateMutability: "view",
+          type: "function"
+        }
+      ];
+      const addr = "0x28880B24D45bf663D344b899f4ac66B210BBaF51";
+      const priceConsumerV3 = new ethers.Contract(
+        addr,
+        aggregatorV3InterfaceABI,
+        provider
+      );
+      let roundData = await priceConsumerV3.getLatestPrice();
+      roundData = Math.round((roundData / 1000000) * 1e2) / 1e2;
+      setL7TokenPrice(roundData);
+      setL7Token((Math.round(roundData * maticToken) * 1e4) / 1e4);
+    })();
+  }, [tokenBalance]);
+
+  const updateL7Token = (val) => {
+    setL7Token(val);
+    setMaticToken(Math.round((val / l7TokenPrice) * 10000) / 10000);
+  };
+
+  const updateMaticToken = (val) => {
+    setMaticToken(val);
+    setL7Token((Math.round(l7TokenPrice * val * 10000)) / 10000);
+  };
 
   return (
     <div className="content-center justify-center">
@@ -40,7 +82,12 @@ const Trade = () => {
         </span>
       </div>
       <div className="rounded flex justify-between bg-slate-50 p-3">
-        <input type="text" className="border-0 text-xl" />
+        <input
+          type="text"
+          className="border-0 text-xl"
+          value={maticToken}
+          onChange={(e) => updateMaticToken(e.target.value)}
+        />
         <div className="bg-slate-200 w-40 p-1 shadow-md rounded">
           <select className="bg-slate-200 w-full">
             <option value="Matic" defaultValue={true}>
@@ -57,7 +104,12 @@ const Trade = () => {
       <div className="rounded flex justify-center bg-slate-50 "></div>
 
       <div className="rounded flex justify-between bg-slate-50 p-3 mt-2">
-        <input type="text" className="border-0 text-xl" />
+        <input
+          type="text"
+          className="border-0 text-xl"
+          value={l7Token}
+          onChange={(e) => updateL7Token(e.target.value)}
+        />
         <div className="bg-slate-200 w-40 p-1 shadow-md rounded">L7 Token</div>
       </div>
       <div className="rounded flex justify-between bg-slate-50 p-3">
@@ -66,7 +118,7 @@ const Trade = () => {
       </div>
 
       <div className="rounded flex justify-start  p-3 mt-2">
-        <span>1 Ether = 1000000 L7</span>
+        <span>1 Matic = {l7TokenPrice} L7</span>
       </div>
 
       <div className="rounded-2xl flex justify-center bg-red-500 hover:bg-red-400 p-3 mt-2 text-2xl text-white cursor-pointer">

@@ -99,6 +99,133 @@ body {
   -webkit-text-fill-color: transparent;
 }
 
+.dice1 {
+  height: 100;
+  width: 100px;
+  position: relative;
+  transform-style: preserve-3d;
+  transform: translateZ(-50px) rotateY(-45deg) rotateX(-45deg);
+  transition: transform 1s;
+}
+.dice2 {
+  height: 100px;
+  width: 100px;
+  position: relative;
+  transform-style: preserve-3d;
+  transform: translateZ(-50px) rotateY(-45deg) rotateX(-45deg);
+  transition: transform 1s;
+}
+.panel {
+  border-radius: 10px;
+  width: 150px;
+  height: 150px;
+  perspective: 400px;
+  position: absolute;
+  left: 50%;
+  top: 30%;
+  transform: translate(-50%, -50%);
+}
+.dot {
+  display: block;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  margin: 4px;
+  background-color: gold;
+}
+.side {
+  position: absolute;
+  background-color: black;
+  width: 100px;
+  height: 100px;
+  border-radius: 10px;
+  line-height: 100px;
+}
+.one {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transform: rotateX(-90deg) translateZ(50px);
+  z-index: 1;
+}
+.two {
+  display: flex;
+  align-items:center;
+  justify-content: space-evenly;
+  transform: rotateY(180deg) translateZ(50px);
+  z-index: 2;
+}
+
+.three {
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+  transform: rotateY(90deg) translateZ(50px);
+  z-index: 3;
+}
+.four {
+  z-index: 4;
+  transform: rotateY(0deg) translateZ(50px);
+}
+.four,
+.six {
+  display: flex;
+  justify-content: space-evenly;
+}
+
+.four .kolona,
+.six .kolona {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+}
+
+.five {
+  display: flex;
+  justify-content: space-evenly;
+  transform: rotateY(-90deg) translateZ(50px);
+  z-index: 5;
+}
+
+.five .kolona {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+}
+
+.five .kolona:nth-of-type(2) {
+  justify-content: center;
+}
+.six {
+  transform: rotateX(90deg) translateZ(50px);
+  z-index: 6;
+}
+
+/*Customization panel*/
+.custom {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: calc(20% + 250px);
+}
+.custom > * {
+  margin: 10px;
+}
+.custom > button {
+  font-size: 20px;
+  font-family: "Verdana";
+  width: 200px;
+  height: 50px;
+  color: gold;
+  background-color: black;
+  border: none;
+  border-radius: 10px;
+}
+.picker {
+  border: none;
+}
+
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;

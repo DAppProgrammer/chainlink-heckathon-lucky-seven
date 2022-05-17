@@ -9,6 +9,7 @@ export const TransactionProvider = ({ children }) => {
   const [ethereum, setEthereum] = useState();
   const [tokenBalance, setTokenBalance] = useState(1500);
   const [trading, setTrading] = useState(false);
+  const [approved, setApproved] = useState(false);
 
   // const [approved, setApproved] = useState(false);
   useEffect(() => {
@@ -61,6 +62,8 @@ export const TransactionProvider = ({ children }) => {
         setTokenBalance,
         trading,
         setTrading,
+        approved,
+        setApproved
       }}
     >
       {children}
