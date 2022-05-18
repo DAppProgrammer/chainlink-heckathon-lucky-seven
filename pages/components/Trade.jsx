@@ -11,7 +11,6 @@ const Trade = () => {
   const [l7TokenPrice, setL7TokenPrice] = useState(0);
   const [maticToken, setMaticToken] = useState(0);
   const [l7Token, setL7Token] = useState(0);
-  // const token = useToken("0xF02c1c8e6114b1Dbe8937a39260b5b0a374432bB");
   const [tokenBalance, setTokenBalance] = useState(0);
   const address = useAddress();
 
@@ -21,7 +20,7 @@ const Trade = () => {
       let balance = await provider.getBalance(address);
       balance = Math.round(ethers.utils.formatEther(balance) * 1e4) / 1e4;
       setTokenBalance(balance);
-      setMaticToken(balance);
+      updateMaticToken(5);
     })();
   }, [address]);
 
@@ -70,7 +69,7 @@ const Trade = () => {
 
   const updateMaticToken = (val) => {
     setMaticToken(val);
-    setL7Token((Math.round(l7TokenPrice * val * 10000)) / 10000);
+    setL7Token(Math.round(l7TokenPrice * val * 10000) / 10000);
   };
 
   return (
@@ -98,7 +97,15 @@ const Trade = () => {
       </div>
       <div className="rounded flex justify-between bg-slate-50 p-3">
         <div></div>
-        <div>Balance: {tokenBalance} </div>
+        <div
+          className="cursor-pointer"
+          onClick={() => updateMaticToken(tokenBalance)}
+        >
+          Balance: {tokenBalance}
+          {tokenBalance != maticToken && (
+            <span className="ml-2 text-xs px-2 bg-red-300 rounded-lg">Max</span>
+          )}
+        </div>
       </div>
 
       <div className="rounded flex justify-center bg-slate-50 "></div>
@@ -121,13 +128,15 @@ const Trade = () => {
         <span>1 Matic = {l7TokenPrice} L7</span>
       </div>
 
-      <div className="rounded-2xl flex justify-center bg-red-500 hover:bg-red-400 p-3 mt-2 text-2xl text-white cursor-pointer">
-        Swap
-      </div>
-
-      <div className="rounded-2xl flex justify-center bg-gray-300 p-3 mt-2">
-        Insufficient liquidity for this trade
-      </div>
+      {tokenBalance >= maticToken ? (
+        <div className="rounded-2xl flex justify-center bg-red-500 hover:bg-red-400 p-3 mt-2 text-2xl text-white cursor-pointer">
+          Swap
+        </div>
+      ) : (
+        <div className="rounded-2xl flex justify-center bg-gray-300 p-3 mt-2">
+          Insufficient liquidity for this trade
+        </div>
+      )}
     </div>
   );
 };

@@ -32,8 +32,6 @@ const BetOption = () => {
   };
 
   const handleApprove = () => {
-    alert(betAmount);
-    alert(tokenBalance);
     if (betAmount > tokenBalance) {
       alert(
         "You do not have enough tokens to make this bet, buy some more tokens to play"
