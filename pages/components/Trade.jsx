@@ -16,7 +16,10 @@ const Trade = () => {
 
   useEffect(() => {
     (async () => {
-      const provider = new ethers.providers.Web3Provider(window.ethereum);
+      // const provider = new ethers.providers.Web3Provider(window.ethereum);
+      const provider = new ethers.providers.JsonRpcProvider(
+        "https://polygon-mumbai.infura.io/v3/3d90d3d4b59845da80d1e51e30205521"
+      );
       let balance = await provider.getBalance(address);
       balance = Math.round(ethers.utils.formatEther(balance) * 1e4) / 1e4;
       setTokenBalance(balance);
