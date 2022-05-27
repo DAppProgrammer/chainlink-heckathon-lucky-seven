@@ -16,4 +16,4 @@ export const gameTokenAddress = "0x33B803A9b97cd91cA45FA8572599dC3EC03A6195";
 import luckySevenGameArtifacts from "../artifacts/contracts/LuckySevenGame.sol/LuckySevenGame.json";
 export const luckySevenGameAbi = luckySevenGameArtifacts.abi;
 export const luckySevenGameAddress =
-  "0xF2a914DcAd185866d451C87C3268855f1590B8E1";
+  "0xF30bef80529783D6D3B664FA83888689b5C6c4B0";

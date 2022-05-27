@@ -59,6 +59,21 @@ const Trade = () => {
     setL7Token(Math.round(l7TokenPrice * val * 10000) / 10000);
   };
 
+  const buyToken = async () => {
+    const provider = new ethers.providers.Web3Provider(window.ethereum);
+
+    const luckySevenGame = new ethers.Contract(
+      luckySevenGameAddress,
+      luckySevenGameAbi,
+      provider.getSigner()
+    );
+    await luckySevenGame.buyToken(ethers.utils.parseEther(l7Token.toString()), {
+      from: address,
+      value: ethers.utils.parseEther(maticToken.toString()),
+      gasLimit: 3000000
+    });
+  };
+
   return (
     <div className="content-center justify-center">
       <div className="flex justify-between pb-3">
@@ -116,7 +131,10 @@ const Trade = () => {
       </div>
 
       {tokenBalance >= maticToken ? (
-        <div className="rounded-2xl flex justify-center bg-red-500 hover:bg-red-400 p-3 mt-2 text-2xl text-white cursor-pointer">
+        <div
+          className="rounded-2xl flex justify-center bg-red-500 hover:bg-red-400 p-3 mt-2 text-2xl text-white cursor-pointer"
+          onClick={buyToken}
+        >
           Swap
         </div>
       ) : (

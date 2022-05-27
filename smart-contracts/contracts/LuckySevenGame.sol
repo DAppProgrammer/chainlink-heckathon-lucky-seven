@@ -19,4 +19,22 @@ contract LuckySevenGame {
         require(token.balanceOf(msg.sender) >= amt);
         token.transferFrom(msg.sender, address(this), amt);
     }
+
+    function buyToken(uint256 _tokenGet) public payable {
+        require(
+            token.balanceOf(address(this)) >= _tokenGet,
+            "insufficient token balance"
+        );
+        token.transfer(msg.sender, _tokenGet);
+    }
+
+    function sellToken(uint256 _token, uint256 _matic) public {
+        require(address(this).balance >= _matic, "insufficient matic balance");
+        token.approve(address(this), _token);
+        require(
+            token.transferFrom(msg.sender, address(this), _token),
+            "error in transfer from"
+        );
+        payable(msg.sender).transfer(_matic);
+    }
 }

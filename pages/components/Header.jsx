@@ -30,7 +30,7 @@ const Header = () => {
   console.log("ADDRESS:", address);
 
   useEffect(() => {
-    if(!address) return;
+    if (!address) return;
 
     (async () => {
       await updateGameToken(address);
@@ -94,7 +94,10 @@ const Header = () => {
   return (
     <>
       <nav className="pt-3 flex flex-row">
-        <div className="text-slate-300 px-3 flex items-center">
+        <div
+          className="text-slate-300 px-3 flex items-center cursor-pointer"
+          onClick={async () => await updateGameToken(address)}
+        >
           <Image src={ImgCoins} alt="" />
           Token balance: {gameToken}
         </div>
