@@ -59,8 +59,6 @@ const Dice = () => {
       }
     }
 
-    alert(`${betResult},${selectedOption}`);
-
     let tx;
     if (betResult == selectedOption) {
       tx = await transfer(ethers.utils.parseEther(betAmount.toString()));
