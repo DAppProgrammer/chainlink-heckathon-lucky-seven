@@ -9,7 +9,7 @@ import {
   useNetwork,
   useAddress,
   useDisconnect,
-  useTokenBalance,
+  useTokenBalance
 } from "@thirdweb-dev/react";
 
 import Avatar from "./Avatar";
@@ -24,10 +24,18 @@ const Header = () => {
   const disconnectWallet = useDisconnect();
   const address = useAddress();
   const network = useNetwork();
-  const { tokenBalance, setTokenBalance, setCurrentAccount } =
+  const { gameToken, updateGameToken, setCurrentAccount } =
     useContext(TransactionProvider);
 
   console.log("ADDRESS:", address);
+
+  useEffect(() => {
+    if(!address) return;
+
+    (async () => {
+      await updateGameToken(address);
+    })();
+  }, [address]);
 
   if (!address) {
     return (
@@ -88,8 +96,7 @@ const Header = () => {
       <nav className="pt-3 flex flex-row">
         <div className="text-slate-300 px-3 flex items-center">
           <Image src={ImgCoins} alt="" />
-          Token balance: {tokenBalance}{" "}
-          <span className="px-3 text-green-200">Buy Game Tokens</span>
+          Token balance: {gameToken}
         </div>
         <div className="ml-auto py-2 px-4">
           {!address && (

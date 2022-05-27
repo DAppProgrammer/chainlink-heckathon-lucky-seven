@@ -1,4 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
+import { ethers } from "ethers";
 import TransactionProvider from "../../context/TransactionContext";
 import Dice from "./Dice";
 import Loader from "./Loader";
@@ -7,19 +8,23 @@ import Trade from "./Trade";
 const BetOption = () => {
   const [loading, setLoading] = useState(false);
 
-  const [selectedOption, setSelectedOption] = useState(7);
-  const [betAmount, setBetAmount] = useState(500);
   const {
-    tokenBalance,
-    setTokenBalance,
+    gameToken,
+    setGameToken,
     trading,
     setTrading,
+    approveBet,
     approved,
-    setApproved
+    setApproved,
+    selectedOption,
+    setSelectedOption,
+    betAmount,
+    setBetAmount
   } = useContext(TransactionProvider);
 
+  
   const updateBetAmount = (type) => {
-    if (type == "+" && betAmount + 500 > tokenBalance) {
+    if (type == "+" && betAmount + 500 > gameToken) {
       alert("Bet amount cannot be more than token balance");
       return;
     }
@@ -31,8 +36,8 @@ const BetOption = () => {
     type == "+" ? setBetAmount(betAmount + 500) : setBetAmount(betAmount - 500);
   };
 
-  const handleApprove = () => {
-    if (betAmount > tokenBalance) {
+  const handleApprove = async () => {
+    if (betAmount > gameToken) {
       alert(
         "You do not have enough tokens to make this bet, buy some more tokens to play"
       );
@@ -43,6 +48,7 @@ const BetOption = () => {
     if (!approved) {
       //Check bet amount and available balance
       //Call async/await approve method of ERC20 token
+      await approveBet(betAmount);
 
       setTimeout(() => {
         setApproved(true);

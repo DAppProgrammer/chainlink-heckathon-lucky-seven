@@ -3,10 +3,19 @@ import TransactionProvider from "../../context/TransactionContext";
 import { useNetwork } from "@thirdweb-dev/react";
 import { useAddress } from "@thirdweb-dev/react";
 // import { useToken } from "@thirdweb-dev/react";
+import {
+  priceConsumerV3Abi,
+  priceConsumerV3Address,
+  luckySevenGameAbi,
+  luckySevenGameAddress,
+  providerUrl
+} from "../../utils/constants";
+
 import { ethers } from "ethers";
 
 const Trade = () => {
-  const { trading, setTrading } = useContext(TransactionProvider);
+  const { trading, setTrading, updateGameToken, gameToken } =
+    useContext(TransactionProvider);
   const network = useNetwork();
   const [l7TokenPrice, setL7TokenPrice] = useState(0);
   const [maticToken, setMaticToken] = useState(0);
@@ -16,10 +25,7 @@ const Trade = () => {
 
   useEffect(() => {
     (async () => {
-      // const provider = new ethers.providers.Web3Provider(window.ethereum);
-      const provider = new ethers.providers.JsonRpcProvider(
-        "https://polygon-mumbai.infura.io/v3/3d90d3d4b59845da80d1e51e30205521"
-      );
+      const provider = new ethers.providers.JsonRpcProvider(providerUrl);
       let balance = await provider.getBalance(address);
       balance = Math.round(ethers.utils.formatEther(balance) * 1e4) / 1e4;
       setTokenBalance(balance);
@@ -29,33 +35,11 @@ const Trade = () => {
 
   useEffect(() => {
     (async () => {
-      const provider = new ethers.providers.JsonRpcProvider(
-        "https://polygon-mumbai.infura.io/v3/3d90d3d4b59845da80d1e51e30205521"
-      );
-      const aggregatorV3InterfaceABI = [
-        {
-          inputs: [],
-          stateMutability: "nonpayable",
-          type: "constructor"
-        },
-        {
-          inputs: [],
-          name: "getLatestPrice",
-          outputs: [
-            {
-              internalType: "int256",
-              name: "",
-              type: "int256"
-            }
-          ],
-          stateMutability: "view",
-          type: "function"
-        }
-      ];
-      const addr = "0x28880B24D45bf663D344b899f4ac66B210BBaF51";
+      const provider = new ethers.providers.JsonRpcProvider(providerUrl);
+
       const priceConsumerV3 = new ethers.Contract(
-        addr,
-        aggregatorV3InterfaceABI,
+        priceConsumerV3Address,
+        priceConsumerV3Abi,
         provider
       );
       let roundData = await priceConsumerV3.getLatestPrice();
@@ -124,7 +108,7 @@ const Trade = () => {
       </div>
       <div className="rounded flex justify-between bg-slate-50 p-3">
         <div></div>
-        <div>Balance: 500</div>
+        <div>Balance: {gameToken}</div>
       </div>
 
       <div className="rounded flex justify-start  p-3 mt-2">
