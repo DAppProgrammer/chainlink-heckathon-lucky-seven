@@ -23,30 +23,54 @@ const Dice = () => {
     transferFrom,
     updateGameToken,
     selectedOption,
+    setBetAmount,
     betAmount
   } = useContext(TransactionProvider);
 
-  const getRandoms = () => {
+  const spin = async () => {
     let rnd = 0,
       rnd2 = 0,
       rndNew = 0,
       rnd2New = 0;
+    let x, y, x2, y2;
 
     while (rndNew === rnd) {
       rndNew = Math.floor(Math.random() * 6 + 1);
     }
-    setNum1(rndNew);
+    rnd = rndNew;
 
     while (rnd2New === rnd2) {
       rnd2New = Math.floor(Math.random() * 6 + 1);
     }
-    setNum2(rnd2New);
-  };
+    rnd2 = rnd2New;
 
-  const spin = () => {
-    let x, y, x2, y2;
+    setLoading(true);
 
-    switch (num1) {
+    let betResult = 0;
+    if (rnd + rnd2 <= 6) {
+      betResult = 6;
+    } else if (rnd + rnd2 >= 8) {
+      betResult = 8;
+    } else {
+      betResult = 7;
+      if (betResult == selectedOption) setBetAmount(betAmount * 2);
+    }
+
+    alert(`${betResult},${selectedOption}`);
+
+    let tx;
+    if (betResult == selectedOption) {
+      tx = await transfer(ethers.utils.parseEther(betAmount.toString()));
+    } else {
+      tx = await transferFrom(ethers.utils.parseEther(betAmount.toString()));
+    }
+
+    setTimeout(() => {
+      setExecuted(true);
+      setLoading(false);
+    }, 5000);
+
+    switch (rnd) {
       case 1:
         x = 720;
         y = 810;
@@ -56,12 +80,12 @@ const Dice = () => {
         y = 990;
         break;
       default:
-        x = 720 + (6 - num1) * 90;
+        x = 720 + (6 - rnd) * 90;
         y = 900;
         break;
     }
 
-    switch (num2) {
+    switch (rnd2) {
       case 1:
         x2 = 720;
         y2 = 810;
@@ -71,7 +95,7 @@ const Dice = () => {
         y2 = 990;
         break;
       default:
-        x2 = 720 + (6 - num2) * 90;
+        x2 = 720 + (6 - rnd2) * 90;
         y2 = 900;
         break;
     }
@@ -81,36 +105,88 @@ const Dice = () => {
 
     document.querySelector(".dice2").style.transform =
       "translateZ(-100px) rotateY(" + x2 + "deg) rotateX(" + y2 + "deg)";
-
-    setTimeout(() => {
-      setExecuted(true);
-    }, 1000);
   };
+  // const spin = async () => {
+  //   let rnd = 0,
+  //     rnd2 = 0,
+  //     rndNew = 0,
+  //     rnd2New = 0;
+  //   let x, y, x2, y2;
 
-  const rollTheDice = async () => {
-    setLoading(true);
-    getRandoms();
+  //   while (rndNew === rnd) {
+  //     rndNew = Math.floor(Math.random() * 6 + 1);
+  //   }
+  //   rnd = rndNew;
+  //   setNum1(rnd);
 
-    let betResult = 0;
-    if (num1 + num2 <= 6) {
-      betResult = 6;
-    } else if (num1 + num2 >= 8) {
-      betResult = 8;
-    } else {
-      betResult = 7;
-      if (betResult == selectedOption) setBetAmount(betAmount * 2);
-    }
+  //   while (rnd2New === rnd2) {
+  //     rnd2New = Math.floor(Math.random() * 6 + 1);
+  //   }
+  //   rnd2 = rnd2New;
+  //   setNum2(rnd2);
 
-    alert(`${betResult},${selectedOption}`);
-    if (betResult == selectedOption) {
-      await transfer(ethers.utils.parseEther(betAmount.toString()));
-    } else {
-      await transferFrom(ethers.utils.parseEther(betAmount.toString()));
-    }
+  //   setLoading(true);
 
-    setLoading(false);
-    spin();
-  };
+  //   let betResult = 0;
+  //   if (num1 + num2 <= 6) {
+  //     alert("6");
+  //     betResult = 6;
+  //   } else if (num1 + num2 >= 8) {
+  //     alert("8");
+  //     betResult = 8;
+  //   } else {
+  //     betResult = 7;
+  //     alert("7");
+  //     if (betResult == selectedOption) setBetAmount(betAmount * 2);
+  //   }
+  //   alert("BETAMOUNT:" + betAmount);
+
+  //   alert(`${betResult},${selectedOption}`);
+
+  //   if (betResult == selectedOption) {
+  //     await transfer(ethers.utils.parseEther(betAmount.toString()));
+  //   } else {
+  //     await transferFrom(ethers.utils.parseEther(betAmount.toString()));
+  //   }
+
+  //   setLoading(false);
+
+  //   switch (rnd) {
+  //     case 1:
+  //       x = 720;
+  //       y = 810;
+  //       break;
+  //     case 6:
+  //       x = 720;
+  //       y = 990;
+  //       break;
+  //     default:
+  //       x = 720 + (6 - rnd) * 90;
+  //       y = 900;
+  //       break;
+  //   }
+
+  //   switch (rnd2) {
+  //     case 1:
+  //       x2 = 720;
+  //       y2 = 810;
+  //       break;
+  //     case 6:
+  //       x2 = 720;
+  //       y2 = 990;
+  //       break;
+  //     default:
+  //       x2 = 720 + (6 - rnd2) * 90;
+  //       y2 = 900;
+  //       break;
+  //   }
+
+  //   document.querySelector(".dice1").style.transform =
+  //     "translateZ(-100px) rotateY(" + x + "deg) rotateX(" + y + "deg)";
+
+  //   document.querySelector(".dice2").style.transform =
+  //     "translateZ(-100px) rotateY(" + x2 + "deg) rotateX(" + y2 + "deg)";
+  // };
 
   return (
     <>
@@ -241,7 +317,7 @@ const Dice = () => {
               {!loading && !executed && (
                 <button
                   className="cursor-pointer px-3 py-2 m-3 items-center flex-col rounded-full my-5 border-2  "
-                  onClick={rollTheDice}
+                  onClick={spin}
                 >
                   Roll the Dice
                 </button>
