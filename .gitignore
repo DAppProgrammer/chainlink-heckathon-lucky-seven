@@ -40,6 +40,3 @@ typechain
 
 #Hardhat files
 cache
-artifacts/@chainlink
-artifacts/@openzeppelin
-artifacts/build-info
